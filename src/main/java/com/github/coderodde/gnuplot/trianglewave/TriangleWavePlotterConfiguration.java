@@ -26,8 +26,8 @@ public final class TriangleWavePlotterConfiguration {
         static final double X_RANGE_END   =  4.0 * Math.PI;
         static final double Y_RANGE_START = -1.5          ;
         static final double Y_RANGE_END   = 1.5           ;
-        static final String PLOT_WIDTH    = "320"         ;
-        static final String PLOT_HEIGHT   = "200"         ;
+        static final String PLOT_WIDTH    = "960"         ;
+        static final String PLOT_HEIGHT   = "600"         ;
     }
     
     private double period      = Defaults.PERIOD       ;      
