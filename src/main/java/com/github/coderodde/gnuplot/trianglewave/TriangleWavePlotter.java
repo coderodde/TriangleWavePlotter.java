@@ -2,9 +2,9 @@ package com.github.coderodde.gnuplot.trianglewave;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,8 +56,14 @@ public final class TriangleWavePlotter {
     }
     
     public static void main(String[] args) {
+        new TriangleWavePlotter().run(args);
+    }
+    
+    private TriangleWavePlotter() {}
+    
+    void run(String[] args) {
         if (args.length < 1) {
-            System.out.println("(No output PNG file name provided.");
+            System.out.println("No output PNG file name provided.");
             System.exit(0);
         }
         
@@ -67,16 +73,12 @@ public final class TriangleWavePlotter {
         try {
             plotTemplate = readTriangularWaveGnuplotFile();
         } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, 
-                       "Could not read the resource plot file.",
-                       ex);
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Could not read the Gnuplot template file.", 
+                    ex);
             
             System.exit(1);
-            return;
-        } catch (URISyntaxException ex) {
-            LOGGER.log(Level.SEVERE, "Bad URI syntax.", ex);
-            
-            System.exit(2);
             return;
         }
         
@@ -137,23 +139,23 @@ public final class TriangleWavePlotter {
         }
     }
     
-    private static String readTriangularWaveGnuplotFile() 
-            throws IOException, URISyntaxException {
-        URL url = 
-                TriangleWavePlotter.class
+    private String readTriangularWaveGnuplotFile() throws IOException {
+        InputStream inputStream = 
+                getClass()
                .getClassLoader()
-               .getResource(TRIANGULAR_WAVE_GNUPLOT_FILE_NAME);
+               .getResourceAsStream(TRIANGULAR_WAVE_GNUPLOT_FILE_NAME);
         
-        if (url == null) {
-            throw new IllegalStateException(
-                    "Could not obtain the URL to the triangle wave " + 
-                    "resource file.");
-        } else {
-            return Files.readString(new File(url.toURI()).toPath());
+        Scanner scanner = new Scanner(inputStream);
+        StringBuilder stringBuilder = new StringBuilder();
+        
+        while (scanner.hasNextLine()) {
+            stringBuilder.append(scanner.nextLine()).append("\n");
         }
+        
+        return stringBuilder.toString();
     }
     
-    private static TriangleWavePlotterConfiguration 
+    private TriangleWavePlotterConfiguration 
         buildTriangleWavePlotterConfiguration(String[] args) {
         
         TriangleWavePlotterConfiguration triangleWavePlotterConfiguration = 
@@ -172,8 +174,7 @@ public final class TriangleWavePlotter {
         return triangleWavePlotterConfiguration;
     }
         
-    private static void 
-        processArgument(
+    private void processArgument(
             TriangleWavePlotterConfiguration triangleWavePlotterConfiguration,
             String argument) {
     
@@ -216,11 +217,11 @@ public final class TriangleWavePlotter {
         }
     }
         
-    private static String 
-        computeGnuplotScript(
+    private String computeGnuplotScript(
             String plotTemplate,
             String outputFileName,
             TriangleWavePlotterConfiguration triangleWavePlotterConfiguration) {
+        
         return plotTemplate
                 .replace(
                         Anchors.PERIOD, 
