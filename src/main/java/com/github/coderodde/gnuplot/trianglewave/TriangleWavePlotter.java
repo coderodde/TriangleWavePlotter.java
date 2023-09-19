@@ -90,7 +90,7 @@ public final class TriangleWavePlotter {
                         triangleWavePlotterConfiguration);
         
         try {
-            generatePNGFile(gnuplotScript);
+            generatePNGFile(outputFileName, gnuplotScript);
         } catch (IOException ex) {
             LOGGER.log(
                     Level.SEVERE,
@@ -109,9 +109,9 @@ public final class TriangleWavePlotter {
                                    TEMPORARY_PLOT_SCRIPT_SUFFIX);
     }
     
-    private static void generatePNGFile(String gnuplotScript) 
+    private static void generatePNGFile(String plotPNGFileName,
+                                        String gnuplotScript) 
             throws IOException, InterruptedException {
-        
         File temporaryScriptFile = getTemporaryGnuplotFile();
         Files.write(temporaryScriptFile.toPath(), gnuplotScript.getBytes());
         
@@ -121,7 +121,15 @@ public final class TriangleWavePlotter {
         };
         
         Process process = Runtime.getRuntime().exec(commands);
-        process.waitFor();
+        int returnStatus = process.waitFor();
+        
+        if (returnStatus != 0) {
+            System.err.println(
+                    "Gnuplot seems to fail, return status: " + returnStatus);
+        } else {
+            System.out.println(
+                    "Generated the plot in " + plotPNGFileName);
+        }
         
         if (!temporaryScriptFile.delete()) {
             System.gc();

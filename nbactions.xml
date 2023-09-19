@@ -12,7 +12,7 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>--amplitude=2 --period=4 --shift=1 --xRangeStart=-12 --xRangeEnd=12 --yRangeStart=-3 --yRangeEnd=3 C:\Users\rodio\OneDrive\Desktop\TriangleWave.png</exec.appArgs>
+                <exec.appArgs>--amplitude=2 --period=4 --shift=1 --xRangeStart=-12 --xRangeEnd=12 --yRangeStart=-3 --yRangeEnd=3 C:/Users/rodio/OneDrive/Desktop/TriangleWave.png</exec.appArgs>
                 <exec.mainClass>com.github.coderodde.gnuplot.trianglewave.TriangleWavePlotter</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <exec.workingdir></exec.workingdir>
@@ -30,7 +30,7 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>--amplitude=2 --period=4 --shift=1 --xRangeStart=-12 --xRangeEnd=12 --yRangeStart=-3 --yRangeEnd=3 C:\Users\rodio\OneDrive\Desktop\TriangleWave.png</exec.appArgs>
+                <exec.appArgs>--amplitude=2 --period=4 --shift=1 --xRangeStart=-12 --xRangeEnd=12 --yRangeStart=-3 --yRangeEnd=3 C:/Users/rodio/OneDrive/Desktop/TriangleWave.png</exec.appArgs>
                 <exec.mainClass>com.github.coderodde.gnuplot.trianglewave.TriangleWavePlotter</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
@@ -51,7 +51,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>com.github.coderodde.gnuplot.trianglewave.TriangleWavePlotter</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs>--amplitude=2 --period=4 --shift=1 --xRangeStart=-12 --xRangeEnd=12 --yRangeStart=-3 --yRangeEnd=3 C:\Users\rodio\OneDrive\Desktop\TriangleWave.png</exec.appArgs>
+                <exec.appArgs>--amplitude=2 --period=4 --shift=1 --xRangeStart=-12 --xRangeEnd=12 --yRangeStart=-3 --yRangeEnd=3 C:/Users/rodio/OneDrive/Desktop/TriangleWave.png</exec.appArgs>
                 <exec.workingdir></exec.workingdir>
             </properties>
         </action>
