@@ -1,4 +1,4 @@
-package com.github.coderodde.gnuplot.tiranglewave;
+package com.github.coderodde.gnuplot.trianglewave;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,9 +13,6 @@ import java.util.regex.Pattern;
  */
 public final class TriangleWavePlotterConfiguration {
     
-    private static final Pattern LONG_COLOR_RGB_HEX = 
-            Pattern.compile("#[0-9A_F]{6}", Pattern.CASE_INSENSITIVE);
-    
     private static final Pattern SHORT_COLOR_RGB_HEX = 
             Pattern.compile("#[0-9A-F]{3}", Pattern.CASE_INSENSITIVE);
     
@@ -29,8 +26,8 @@ public final class TriangleWavePlotterConfiguration {
         static final double X_RANGE_END   =  4.0 * Math.PI;
         static final double Y_RANGE_START = -1.5          ;
         static final double Y_RANGE_END   = 1.5           ;
-        static final String PLOT_WIDTH    = "16.0cm"      ;
-        static final String PLOT_HEIGHT   = "10.0cm"      ;
+        static final String PLOT_WIDTH    = "320"         ;
+        static final String PLOT_HEIGHT   = "200"         ;
     }
     
     private double period      = Defaults.PERIOD       ;      
@@ -157,13 +154,6 @@ public final class TriangleWavePlotterConfiguration {
     }
     
     static String validateHexColor(String hexColorCandidate) {
-        Matcher matcherLongRGBHex = 
-                LONG_COLOR_RGB_HEX.matcher(hexColorCandidate);
-        
-        if (matcherLongRGBHex.matches()) {
-            return hexColorCandidate;
-        }
-        
         Matcher matcherShoftRGBHex = 
                 SHORT_COLOR_RGB_HEX.matcher(hexColorCandidate);
         
@@ -177,8 +167,8 @@ public final class TriangleWavePlotterConfiguration {
     
     private static String convertShortRGBToLong(String hexColor) {
         char r = hexColor.charAt(1);
-        char g = hexColor.charAt(3);
-        char b = hexColor.charAt(5);
+        char g = hexColor.charAt(2);
+        char b = hexColor.charAt(3);
         
         return new StringBuilder()
                 .append("#")

@@ -1,18 +1,16 @@
-package com.github.coderodde.gnuplot.tiranglewave;
+package com.github.coderodde.gnuplot.trianglewave;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class implements a triangle wave plotter.
+ * 
  * @author Rodion "rodde" Efremov
  * @version 1.6 (Sep 17, 2023)
  * @since 1.6 (Sep 17, 2023)
@@ -115,13 +113,13 @@ public final class TriangleWavePlotter {
             throws IOException, InterruptedException {
         
         File temporaryScriptFile = getTemporaryGnuplotFile();
-        Path temporaryScriptPath = temporaryScriptFile.toPath();
-        Files.write(temporaryScriptPath, gnuplotScript.getBytes());
+        Files.write(temporaryScriptFile.toPath(), gnuplotScript.getBytes());
         
-        System.out.println(">>> " + temporaryScriptPath.toString());
-        System.out.println(">>>>> " + Files.readString(temporaryScriptPath));
+        String[] commands = { 
+            "gnuplot.exe",
+            temporaryScriptFile.getAbsolutePath() 
+        };
         
-        String[] commands = { "gnuplot", temporaryScriptPath.toAbsolutePath().toString() };
         Process process = Runtime.getRuntime().exec(commands);
         process.waitFor();
         
@@ -129,8 +127,6 @@ public final class TriangleWavePlotter {
             System.gc();
             temporaryScriptFile.deleteOnExit();
         }
-        
-        System.out.println(process);
     }
     
     private static String readTriangularWaveGnuplotFile() 
