@@ -1,6 +1,9 @@
 # TriangleWavePlotter.java
 An exercise app in Java for interfacing with Gnuplot to plot triangle waves.
 
+# Requirements
+You need to have `gnuplot` on your `PATH` environment variable.
+
 # Compiling and running
 ```
 git clone https://github.com/coderodde/TriangleWavePlotter.java.git
