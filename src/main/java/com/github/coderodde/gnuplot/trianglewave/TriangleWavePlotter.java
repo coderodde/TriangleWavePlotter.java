@@ -3,6 +3,7 @@ package com.github.coderodde.gnuplot.trianglewave;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -25,6 +26,8 @@ public final class TriangleWavePlotter {
     
     private static final String TEMPORARY_PLOT_SCRIPT_PREFIX = "triangle-wave-";
     private static final String TEMPORARY_PLOT_SCRIPT_SUFFIX = ".plt";
+    private static final String WINDOWS_USERPROFILE = "%USERPROFILE%";
+    private static final String LINUX_USERPROFILE = "~";
     
     private static final class Anchors {
         static final String PERIOD           = "{PERIOD}"          ;
@@ -64,10 +67,29 @@ public final class TriangleWavePlotter {
     void run(String[] args) {
         if (args.length < 1) {
             System.out.println("No output PNG file name provided.");
-            System.exit(0);
+            return;
+        }
+        
+        if (args[0].equals("--help")) {
+            printHelp();
+            return;
         }
         
         String outputFileName = args[args.length - 1];
+        String homeDirectory = System.getProperty("user.home");
+        
+        if (outputFileName.startsWith(WINDOWS_USERPROFILE)) {
+            outputFileName = 
+                    homeDirectory
+                    + File.separator
+                    + outputFileName.substring(WINDOWS_USERPROFILE.length());
+        } else if (outputFileName.startsWith(LINUX_USERPROFILE)) {
+            outputFileName = 
+                    homeDirectory
+                    + File.separator
+                    + outputFileName.substring(LINUX_USERPROFILE.length());
+        }
+        
         String plotTemplate;
         
         try {
@@ -271,5 +293,46 @@ public final class TriangleWavePlotter {
                         Anchors.PLOT_HEIGHT, 
                         triangleWavePlotterConfiguration.getPlotHeight())
                 .replace(Anchors.OUTPUT_FILE_NAME, outputFileName);
+    }
+    
+    private void printHelp() {
+        String jarFileName;
+        
+        try {
+            jarFileName = getJarFileName();
+        } catch (URISyntaxException ex) {
+            LOGGER.log(Level.SEVERE, "Could not get the JAR file name.", ex);
+            System.exit(1);
+            return;
+        }
+        
+        System.out.println(
+        """
+        java -jar %s [OPTIONS] OUTPUT_FILE_NAME
+        Where OPTIONS can have:
+            --period=PERIOD       sets the period, positive floating-point-value
+            --amplitude=AMPLITUDE sets the amplitude, positive floating-point value
+            --shift               sets the shift, floating-point value
+            --color               sets the line color, long or short RGB value, or predefined color name
+            --lineWidth           sets the line width, positive integer
+            --xRangeStart         sets the X-range start, floating-point value
+            --xRangeEnd           sets the X-range end, floating-point value
+            --yRangeStart         sets the Y-range start, floating-point value
+            --yRangeEnd           sets the Y-range end, floating-point value
+            --plotWidth           sets the plot width, string
+            --plotHeight          sets the plot height, string
+        """.formatted(jarFileName));
+    }
+    
+    private String getJarFileName() throws URISyntaxException {
+        String absolutePath = getClass()
+          .getProtectionDomain()
+          .getCodeSource()
+          .getLocation()
+          .toURI()
+          .getPath();
+        
+        String[] pathComponents = absolutePath.split("/");
+        return pathComponents[pathComponents.length - 1];
     }
 }

@@ -85,6 +85,13 @@ public final class TriangleWavePlotterConfiguration {
     }
 
     public void setLineWidth(int lineWidth) {
+        if (lineWidth < 1) {
+            throw new IllegalArgumentException(
+                    "Line width is too small: " 
+                            + lineWidth 
+                            + ". Must be at least 1.");
+        }
+        
         this.lineWidth = lineWidth;
     }
 
@@ -93,7 +100,7 @@ public final class TriangleWavePlotterConfiguration {
     }
 
     public void setXRangeStart(double xRangeStart) {
-        this.xRangeStart = xRangeStart;
+        this.xRangeStart = requireFiniteDouble(xRangeStart);
     }
 
     public double getXRangeEnd() {
@@ -101,7 +108,7 @@ public final class TriangleWavePlotterConfiguration {
     }
 
     public void setXRangeEnd(double xRangeEnd) {
-        this.xRangeEnd = xRangeEnd;
+        this.xRangeEnd = requireFiniteDouble(xRangeEnd);
     }
 
     public double getYRangeStart() {
@@ -109,7 +116,7 @@ public final class TriangleWavePlotterConfiguration {
     }
 
     public void setYRangeStart(double yRangeStart) {
-        this.yRangeStart = yRangeStart;
+        this.yRangeStart = requireFiniteDouble(yRangeStart);
     }
 
     public double getYRangeEnd() {
@@ -117,7 +124,7 @@ public final class TriangleWavePlotterConfiguration {
     }
 
     public void setYRangeEnd(double yRangeEnd) {
-        this.yRangeEnd = yRangeEnd;
+        this.yRangeEnd = requireFiniteDouble(yRangeEnd);
     }
 
     public String getPlotWidth() {
@@ -134,6 +141,19 @@ public final class TriangleWavePlotterConfiguration {
 
     public void setPlotHeight(String plotHeight) {
         this.plotHeight = plotHeight;
+    }
+    
+    private static double requireFiniteDouble(double d) {
+        if (Double.isNaN(d)) {
+            throw new IllegalArgumentException("The input double is NaN.");
+        }
+        
+        if (Double.isInfinite(d)) {
+            throw new IllegalArgumentException(
+                    "The input double is inifinite in absolute value.");
+        }
+        
+        return d;
     }
     
     private static double requireDoubleIsPositive(double d) {
